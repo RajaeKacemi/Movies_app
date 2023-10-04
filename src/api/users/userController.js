@@ -1,24 +1,23 @@
-const express = require('express');
-const user = require('./userModel');
+const User = require('../users/userModel');
 
+const registerUser = (req, res) => {
 
-const logInUser = (req, res) => {
-    console.log(req);
-    res.json(req.body);
-    // let {name, email, password} = req.body;
+    let {name, email, password} = req.body;
 
-    // const user = new user({
-    //     name : name,
-    //     email : email,
-    //     password : password
-    // });
+    const users = new User({
+        name : name,
+        email : email,
+        password : password
+    });
 
-    // user.save((err, user) => {
-    //     if (err) {
-    //         res.send(err);
-    //     }
-    //     res.json(user);
-    // });
+    users.save();
 };
 
-module.exports = {logInUser};
+const getUsers = async (req, res) => {
+
+    const users = await User.find()
+    console.log(users)
+    res.json(users)
+};
+
+module.exports = { getUsers,registerUser};
