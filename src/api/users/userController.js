@@ -65,7 +65,7 @@ const LogInUser = async (req, res) => {
 }
 
 const logOut = async (req, res) => {
-    res.cleanCookie("access_token").status(200).json({message : "Logout successfully"});
+    res.clearCookie("access_token").status(200).json({message : "Logout successfully"});
 }
 
 const generateJwt = ((id, role) => {
