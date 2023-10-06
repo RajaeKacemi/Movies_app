@@ -1,8 +1,10 @@
 const User = require('../users/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv').config();
+
 const cookieParser = require('cookie-parser');
-const SECRET_KEY = 'SECRET_KEY';
+const SECRET_KEY = "SECRET_KEY";
 
 const registerUser = (req, res) => {
 
@@ -17,11 +19,11 @@ const registerUser = (req, res) => {
 
     users.save()    
     .then((users) => {
-        res.status(201).json();
+        res.status(201).json("Register successfully 😊 👌");
     })
     .catch((error) => {
     console.log(error);
-    res.status(400).json();
+    res.status(400).json({ message: "Error"}, {Error : Error});
 
 });
     
@@ -35,7 +37,7 @@ const getUsers = async (req, res) => {
 };
 
 
-const updateUser = async (req, res) => {
+const resetPasswordUser = async (req, res) => {
     let {email} = req.body;
     const filter = {email};
     const update = { age: 59 };
@@ -49,22 +51,28 @@ const LogInUser = async (req, res) => {
     let {email, password} = req.body;
 
         const foundedUser = await User.findOne({email});
-        if(foundedUser && (await bcrypt.compare(password, foundedUser.password))){
-            res.status(201).json({
-            _id: foundedUser._id,
-            name: foundedUser.name,
-            email: foundedUser.email,
-            token: generateJwt(foundedUser._id)
-            })
+        if(foundedUser && (await bcrypt.compareSync(password, foundedUser.password))){
+            let token = generateJwt(foundedUser._id, foundedUser.role);
+
+            res.status(201).cookie("access_token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+            }).json({ message: "Logged in successfully 😊 👌" });
         }else {
             res.status(400)
             throw new Error('Invalid credentials');
         }
 }
 
+const logOut = async (req, res) => {
+    res.cleanCookie("access_token").status(200).json({message : "Logout successfully"});
+}
 
-const generateJwt = (id => {
-    return jwt.sign({id}, SECRET_KEY);
+const generateJwt = ((id, role) => {
+    return jwt.sign({id, role}, SECRET_KEY, {expiresIn: '30d'});
 });
 
-module.exports = { getUsers, registerUser, LogInUser, updateUser};
+const test = (req, res) => {
+    return res.json({ user: { id: req.userId, role: req.userRole } });
+}
+module.exports = {getUsers, registerUser, LogInUser, resetPasswordUser, test, logOut};
