@@ -2,8 +2,8 @@ const User = require('../users/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
-
 const cookieParser = require('cookie-parser');
+
 const SECRET_KEY = "SECRET_KEY";
 
 const registerUser = (req, res) => {
@@ -22,7 +22,6 @@ const registerUser = (req, res) => {
         res.status(201).json("Register successfully 😊 👌");
     })
     .catch((error) => {
-    console.log(error);
     res.status(400).json({ message: "Error"}, {Error : Error});
 
 });
@@ -36,16 +35,33 @@ const getUsers = async (req, res) => {
 
 };
 
+const deleteUser = async (req, res) => {
+    const userId = req.params.id;
+
+        User.findOneAndDelete({_id:userId}).then(function(){
+            res.status(200).json({message : "User deleted"}); // Success
+        }).catch(function(error){
+            console.log(error);
+            res.status(400).json({message : "User dosen\'t exist"}); // Failure
+        });
+}
 
 const resetPasswordUser = async (req, res) => {
-    let {email} = req.body;
-    const filter = {email};
-    const update = { age: 59 };
+    const userId = req.params.id;
+    
+    const userFounded = User.findById(userId);
+    if(userFounded){
+        hash_password = await bcrypt.hashSync("update_password", 10);
+    User.findByIdAndUpdate(userId, { password: hash_password })
+    .then((user) =>{
+        res.status(200).json({message : "User Updated :"});
+    })
+    .catch((error) => {
+        res.status(400).json({message : error});
+    });
+}
+}
 
-// `doc` is the document _before_ `update` was applied
-let doc = await Character.findOneAndUpdate(filter, update);
-
-};
 
 const LogInUser = async (req, res) => {
     let {email, password} = req.body;
@@ -75,4 +91,4 @@ const generateJwt = ((id, role) => {
 const test = (req, res) => {
     return res.json({ user: { id: req.userId, role: req.userRole } });
 }
-module.exports = {getUsers, registerUser, LogInUser, resetPasswordUser, test, logOut};
+module.exports = {getUsers, registerUser, LogInUser, resetPasswordUser, test, logOut, deleteUser};
