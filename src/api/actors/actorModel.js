@@ -13,9 +13,9 @@ const actorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    movieId: { // array of movies ? 
+    movieId: { // array of ids movies ? 
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category',
+        ref: 'Show',
         require: true
     }
 });

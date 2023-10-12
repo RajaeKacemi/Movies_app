@@ -12,15 +12,15 @@ const actors = await Actor.find();
 
 const createActor = async (req, res) => {
 
-    let {name, description, image, moviesId}  = req.body;
+    let {name, description, image, movieId}  = req.body;
     const actor = new Actor({
-        name : ame,
+        name : name,
         description : description, 
-        image : image, 
-        movieId : movieId,
+        image : image,
+        movieId : movieId
     });
     actor.save()
-    .then((users) => {
+    .then((actors) => {
         res.status(201).json("Actor added successfully 😊 👌");
     })
     .catch((error) => {
