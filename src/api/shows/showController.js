@@ -64,9 +64,9 @@ const setMovie = async (req, res) => {
     }
 };
 
-const getImage = (upload.single('file'), (req, res) => {
-        
-});
+const getImage = async (req, res) => {
+    upload.single('file');
+};
 
 
 
