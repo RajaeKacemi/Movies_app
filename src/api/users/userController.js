@@ -2,7 +2,6 @@ const User = require('../users/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
-const cookieParser = require('cookie-parser');
 
 const SECRET_KEY = "SECRET_KEY";
 
@@ -31,7 +30,7 @@ const registerUser = (req, res) => {
 const getUsers = async (req, res) => {
 
     const users = await User.find();
-    return (users) ? (res.status(201).json(users)) : (res.status(404).json(users));
+    return (users) ? (res.status(201).json(users)) : (res.status(404).json("error"));
 
 };
 
