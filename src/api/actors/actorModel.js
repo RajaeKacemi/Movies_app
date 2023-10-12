@@ -13,9 +13,10 @@ const actorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    movies: {
-        type: String,
-        required: true
+    moviesId: { 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        require: true
     }
 });
 
