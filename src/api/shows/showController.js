@@ -57,7 +57,7 @@ const setMovie = async (req, res) => {
     try{
 
         await Show.findByIdAndUpdate(idShow, req.body, {new : true})
-        res.status(200).json({message : "User Updated :"});
+        res.status(200).json({message : "Movie Updated :"});
 
     } catch(error){
         res.status(400).json({message : error});
@@ -67,7 +67,6 @@ const setMovie = async (req, res) => {
 const getImage = async (req, res) => {
     upload.single('file');
 };
-
 
 
 module.exports = {getAllShows, createMovie, getMovieById, _delete, setMovie, getImage};
