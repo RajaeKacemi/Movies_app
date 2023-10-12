@@ -1,7 +1,7 @@
 const Show = require('../shows/showModel');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const upload = require('../../index.js');
+const upload = require('../../utils/upload');
 
 const getAllShows = async (req, res) => {
     const shows = await Show.find();
@@ -66,15 +66,7 @@ const setMovie = async (req, res) => {
 
 const getImage = (upload.single('file'), (req, res) => {
         
-    const storage =  multer.diskStorage({
-        destination: function(req, file, cb) {
-            return cb(null, "./api/public/upload")
-        },
-        filename: function (req, file, cb){
-        return cb(null, `${Date.now()}_${file.originalname}}`)
-        }
-    });
-})
+});
 
 
 
