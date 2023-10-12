@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const {getAllActors, getActorById, createActor, setActor, deleteActor} = require('../actors/actorController');
 
-router.get('/Movies', getAllActors);
-router.get('/Movie/:id', getActorById);
-router.post('/addMovie', createActor);
-router.put('/update/:id', setActor);
-router.delete('/delete/:id', deleteActor);
+router.get('/Actors', getAllActors);
+router.get('/Actor/:id', getActorById);
+router.post('/addActor', createActor);
+router.put('/updateActor/:id', setActor);
+router.delete('/deleteActor/:id', deleteActor);
 
 module.exports = router;
